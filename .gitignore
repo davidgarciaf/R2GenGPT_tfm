@@ -1,0 +1,9 @@
+# Tokens y credenciales
+.hf_token*.env
+*.key
+*.pem
+# Archivos generados
+save/
+logs/
+*.ckpt
+__pycache__/
