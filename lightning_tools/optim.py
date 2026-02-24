@@ -1,7 +1,7 @@
-try:
-    from transformers.optimization import AdamW #HF >= 4.46
-except ImportError:
-    from transformers import AdamW # HF <= 4.45
+try: 
+    from transformers.optimization import AdamW
+except (ImportError, ModuleNotFoundError):
+    from torch.optim import AdamW
 
 import functools
 from torch.optim.lr_scheduler import LambdaLR
