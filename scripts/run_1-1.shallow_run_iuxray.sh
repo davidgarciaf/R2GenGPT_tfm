@@ -24,6 +24,20 @@ base_dir="/mnt/sd5/users/dgarcia/data/iu_xray/images"
 version="v1_shallow" # Cambiamos la carpeta de salida
 savepath="/mnt/sd5/users/dgarcia/R2GenGPT/save/$dataset/$version"
 
+# -------------------------------------------------------------
+# Añadimos ajustes para utilizar el modelo cuantizado (4-bit) y
+# que este script pueda ejecutarse en la cola del clúster.
+# Se puede enviar con:
+#   qsub -q tfm.q@deimos run_1-1.shallow_run_iuxray.sh
+# Asegúrate de tener una línea #$ con la cola y memoria si lo usas.
+# -------------------------------------------------------------
+
+# Parámetros de cuantización que se pasarán a train.py
+quant_opts="--load_in_4bit True \
+    --bnb_4bit_compute_dtype float16 \
+    --bnb_4bit_use_double_quant True \
+    --bnb_4bit_quant_type nf4"
+
 python -u /mnt/sd5/users/dgarcia/R2GenGPT/train.py \
     --llama_model "meta-llama/Llama-3.2-1B-Instruct" \
     --low_resource True \
@@ -48,4 +62,5 @@ python -u /mnt/sd5/users/dgarcia/R2GenGPT/train.py \
     --limit_val_batches 1.0 \
     --val_check_interval 1.0 \
     --num_sanity_val_steps 0 \
+    ${quant_opts} \
     2>&1 |tee -a ${savepath}/log.txt
