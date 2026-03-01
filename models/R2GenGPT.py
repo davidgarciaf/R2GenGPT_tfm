@@ -77,33 +77,38 @@ class R2GenGPT(pl.LightningModule):
 
         # Carga el tokenizer de LLAMA
         self.llama_tokenizer.pad_token_id = 0
+        # prepare optional quantization config
+        quant_config = None
+        if getattr(args, 'load_in_4bit', False):
+            from transformers import BitsAndBytesConfig
+            # convert dtype string to torch.dtype if possible
+            cdtype = getattr(torch, args.bnb_4bit_compute_dtype, None)
+            if cdtype is None:
+                cdtype = torch.float16
+            quant_config = BitsAndBytesConfig(
+                load_in_4bit=True,
+                bnb_4bit_compute_dtype=cdtype,
+                bnb_4bit_use_double_quant=args.bnb_4bit_use_double_quant,
+                bnb_4bit_quant_type=args.bnb_4bit_quant_type,
+            )
+            print(f"Using 4-bit quantization: {quant_config}")
+
         if args.low_resource:
-            # self.llama_model = LlamaForCausalLM.from_pretrained(
-                # args.llama_model,
-                # torch_dtype=torch.float16,
-                # trust_remote_code=True,
-                # load_in_8bit=True,
-                # device_map="auto",
-                # use_auth_token=HF_TOKEN,
-                # token=True
-            # )
             self.llama_model = AutoModelForCausalLM.from_pretrained(
                 args.llama_model,
                 torch_dtype=torch.bfloat16,   # o fp16 si tu GPU no soporta bf16
                 trust_remote_code=True,
-                token=True)
-
+                token=True,
+                quantization_config=quant_config,
+            )
         else:
-            # self.llama_model = LlamaForCausalLM.from_pretrained(
-            #     args.llama_model,
-            #     torch_dtype=torch.float16,
-            #     use_auth_token=HF_TOKEN, # Usa el token para autenticar
-            # )
             self.llama_model = AutoModelForCausalLM.from_pretrained(
                 args.llama_model,
                 torch_dtype=torch.bfloat16,  # o float16
                 trust_remote_code=True,
-                token=True) 
+                token=True,
+                quantization_config=quant_config,
+            ) 
 
         if args.llm_use_lora:
             self.embed_tokens = self.llama_model.get_input_embeddings()
