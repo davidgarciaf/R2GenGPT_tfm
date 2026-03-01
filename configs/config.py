@@ -25,7 +25,8 @@ parser.add_argument('--num_workers', default=8, type=int, help="Cpu num for data
 parser.add_argument('--vision_model', default='microsoft/swin-base-patch4-window7-224', type=str, help="vision model to use")
 # Modelo de lenguaje
 # parser.add_argument('--llama_model', default='meta-llama/Llama-2-7b-chat-hf', type=str, help="LLM model to use")
-parser.add_argument('--llama_model', default='meta-llama/Llama-3.2-1b-Instruct', type=str, help="LLM model to use")
+# parser.add_argument('--llama_model', default='meta-llama/Llama-3.2-1b-Instruct', type=str, help="LLM model to use")
+parser.add_argument('--llama_model', default='meta-llama/Llama-2-7b-hf', type=str, help="LLM model to use")
 # Congelamiento del modelo de vision para evitar su ajuse
 parser.add_argument('--freeze_vm', default=True, type=lambda x: (str(x).lower() == 'true'), help='freeze vision model')
 # LoRA
@@ -93,3 +94,22 @@ parser.add_argument('--every_n_train_steps', type=int, default=0, help='How many
 parser.add_argument('--val_check_interval', type=float, default=1.0, help='How often to check the validation set')
 parser.add_argument('--accumulate_grad_batches', type=int, default=1, help='Accumulates gradients over k batches before stepping the optimizer')
 parser.add_argument("--num_sanity_val_steps", type=int, default=2, help='Sanity check runs n validation batches before starting the training routine')
+
+# -------------------------------------------------------------
+# Quantization options for bitsandbytes/Accelerate
+# These flags will be parsed by the same argparse instance and
+# later used when instantiating the LLaMA model. Passing them
+# allows a script or submission to request a 4-bit (or 8-bit)
+# version of the LLM without editing the model code.
+parser.add_argument('--load_in_4bit', default=False,
+					type=lambda x: (str(x).lower() == 'true'),
+					help='load the LLM weights in 4-bit precision')
+parser.add_argument('--bnb_4bit_compute_dtype', default='float16', type=str,
+					help='compute dtype for 4-bit (float16/bfloat16)')
+parser.add_argument('--bnb_4bit_use_double_quant', default=False,
+					type=lambda x: (str(x).lower() == 'true'),
+					help='enable double quantization for 4-bit')
+parser.add_argument('--bnb_4bit_quant_type', default='nf4', type=str,
+					help='quantization type for 4-bit (nf4, fp4, etc)')
+
+# future flags (e.g. load_in_8bit) could be added here as needed
