@@ -1,0 +1,7 @@
+Collecting scipy
+  Downloading scipy-1.10.1-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (58 kB)
+Requirement already satisfied: numpy<1.27.0,>=1.19.5 in ./venv/lib/python3.8/site-packages (from scipy) (1.24.4)
+Downloading scipy-1.10.1-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (34.5 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 34.5/34.5 MB 11.2 MB/s eta 0:00:00
+Installing collected packages: scipy
+Successfully installed scipy-1.10.1

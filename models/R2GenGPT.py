@@ -152,12 +152,26 @@ class R2GenGPT(pl.LightningModule):
         hypo, dictionary of hypothesis sentences (id, sentence)
         score, dictionary of scores
         """
-        scorers = [
-            (Bleu(4), ["Bleu_1", "Bleu_2", "Bleu_3", "Bleu_4"]),
-            (Rouge(), "ROUGE_L"),
-            (Meteor(), "METEOR"),
-            (Cider(), "CIDEr")
-        ]
+        # build the list of scorers; some utilities (e.g. METEOR) require
+        # external binaries (java) that might not be available on the
+        # cluster environment.  If the scorer initialization fails we log
+        # a warning and simply skip it.  This prevents the training loop
+        # from crashing during validation as happened previously.
+        scorers = []
+        scorers.append((Bleu(4), ["Bleu_1", "Bleu_2", "Bleu_3", "Bleu_4"]))
+        scorers.append((Rouge(), "ROUGE_L"))
+        try:
+            scorers.append((Meteor(), "METEOR"))
+        except FileNotFoundError:
+            # the `Meteor` class internally launches a subprocess that
+            # invokes the `java` executable; if java isn't on PATH this
+            # will raise FileNotFoundError.  Catch it and continue.
+            print("WARNING: java not found in PATH, skipping METEOR metric")
+        except Exception as e:
+            # in case other issues arise we don't want the whole training
+            # to fail; just log the problem and move on.
+            print(f"WARNING: could not initialize METEOR scorer ({e}), skipping")
+        scorers.append((Cider(), "CIDEr"))
         final_scores = {}
         for scorer, method in scorers:
             score, scores = scorer.compute_score(ref, hypo)

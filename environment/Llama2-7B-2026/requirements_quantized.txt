@@ -1,0 +1,27 @@
+# ===== Dependencias para Llama2-7B Cuantizado =====
+
+# Framework de aprendizaje profundo (con soporte CUDA)
+torch>=2.0.0  # Instalado con: --index-url https://download.pytorch.org/whl/cu118
+torchvision
+torchaudio
+
+# Transformers y ajuste fino (LoRA)
+transformers==4.30.2
+peft>=0.4.0  # Parameter-Efficient Fine-Tuning (LoRA)
+
+# Entrenamiento y utilidades
+lightning==2.0.5
+tensorboardX>=2.6
+
+# Cuantización (requerido para Llama2 cuantizado)
+bitsandbytes>=0.40.0  # Cuantización 4-bit y 8-bit
+accelerate>=0.20.0    # Distributed training y aceleración
+
+# Utilidades generales
+Pillow>=9.0.0
+numpy
+gradio>=3.40.0
+
+# Opcional pero útil
+scipy>=1.10.0
+scikit-learn>=1.2.0

@@ -3,7 +3,20 @@
 dataset="iu_xray"
 annotation="data/iu_xray/annotation.json"
 base_dir="./data/iu_xray/images"
-delta_file="/apdcephfs/share_733425/vinnylywang/zhanyuwang/Code/R2GenGPT/save/iu_xray/v1_shallow/checkpoints/checkpoint_epoch11_step1548_bleu0.155866_cider0.450477.pth"
+# by default try to pick the most recent checkpoint from the save directory;
+# users may still override by exporting DELTA_FILE or editing this variable.
+savepath="./save/$dataset/$version"
+
+# if delta_file is not defined externally, find latest checkpoint
+if [ -z "${delta_file}" ]; then
+  if compgen -G "${savepath}/checkpoints/*.pth" > /dev/null; then
+    delta_file=$(ls -t ${savepath}/checkpoints/*.pth | head -n1)
+    echo "Using checkpoint: $delta_file"
+  else
+    echo "ERROR: no checkpoint found in ${savepath}/checkpoints"
+    exit 1
+  fi
+fi
 
 version="v1_shallow"
 savepath="./save/$dataset/$version"
@@ -15,8 +28,13 @@ else
   echo "Folder '$savepath' already exists."
 fi
 
+quant_opts="--load_in_4bit True \
+  --bnb_4bit_compute_dtype float16 \
+  --bnb_4bit_use_double_quant False \
+  --bnb_4bit_quant_type nf4"
+
 python -u train.py \
-    --test \
+  --test \
     --dataset ${dataset} \
     --annotation ${annotation} \
     --base_dir ${base_dir} \
@@ -32,4 +50,5 @@ python -u train.py \
     --length_penalty 2.0 \
     --num_workers 8 \
     --devices 1 \
+    ${quant_opts} \
     2>&1 |tee -a ${savepath}/log.txt

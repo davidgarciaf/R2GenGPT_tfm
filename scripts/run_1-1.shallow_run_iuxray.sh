@@ -24,6 +24,35 @@ base_dir="/mnt/sd5/users/dgarcia/data/iu_xray/images"
 version="v1_shallow" # Cambiamos la carpeta de salida
 savepath="/mnt/sd5/users/dgarcia/R2GenGPT/save/$dataset/$version"
 
+# Ensure save directory exists before tee attempts to write
+mkdir -p "$savepath"
+
+# ------------------------------------------------------------------
+# Control de modalidad: quick test vs entrenamiento completo
+# Para una prueba rápida en la cola, exporta QUICK=1 antes de llamar
+# al script; de lo contrario se hará la ejecución completa (shallow).
+# ------------------------------------------------------------------
+if [ "${QUICK}" = "1" ]; then
+    bs=2
+    vbs=2
+    devs=1
+    strat="auto"
+    maxep=3
+    limval=0.0
+    workers=4
+else
+    bs=4
+    vbs=4
+    devs=1
+    strat="auto"
+    maxep=15
+    limval=1.0
+    workers=2
+fi
+
+
+# -------------------------------------------------------------
+
 # -------------------------------------------------------------
 # Añadimos ajustes para utilizar el modelo cuantizado (4-bit) y
 # que este script pueda ejecutarse en la cola del clúster.
@@ -33,9 +62,10 @@ savepath="/mnt/sd5/users/dgarcia/R2GenGPT/save/$dataset/$version"
 # -------------------------------------------------------------
 
 # Parámetros de cuantización que se pasarán a train.py
+# Nota: double_quant=False reduce consumo de memoria temporal durante carga
 quant_opts="--load_in_4bit True \
     --bnb_4bit_compute_dtype float16 \
-    --bnb_4bit_use_double_quant True \
+    --bnb_4bit_use_double_quant False \
     --bnb_4bit_quant_type nf4"
 
 python -u /mnt/sd5/users/dgarcia/R2GenGPT/train.py \
@@ -45,8 +75,8 @@ python -u /mnt/sd5/users/dgarcia/R2GenGPT/train.py \
     --dataset ${dataset} \
     --annotation ${annotation} \
     --base_dir ${base_dir} \
-    --batch_size 4 \
-    --val_batch_size 4 \
+    --batch_size ${bs} \
+    --val_batch_size ${vbs} \
     --freeze_vm True \
     --vis_use_lora False \
     --savedmodel_path ${savepath} \
@@ -55,11 +85,11 @@ python -u /mnt/sd5/users/dgarcia/R2GenGPT/train.py \
     --max_new_tokens 100 \
     --repetition_penalty 2.0 \
     --length_penalty 2.0 \
-    --num_workers 8 \
-    --devices 2 \
-    --strategy ddp \
-    --max_epochs 15 \
-    --limit_val_batches 1.0 \
+    --num_workers ${workers} \
+    --devices ${devs} \
+    --strategy ${strat} \
+    --max_epochs ${maxep} \
+    --limit_val_batches ${limval} \
     --val_check_interval 1.0 \
     --num_sanity_val_steps 0 \
     ${quant_opts} \

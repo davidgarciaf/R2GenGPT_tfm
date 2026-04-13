@@ -1,0 +1,48 @@
+/mnt/sd5/users/dgarcia/R2GenGPT/environment/Llama2-7B-2026/venv/lib/python3.8/site-packages/huggingface_hub/file_download.py:949: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+✓ Token HuggingFace cargado desde archivo
+
+
+======================================================================
+  TEST DE LLAMA2-7B CUANTIZADO (4-BIT)
+======================================================================
+
+======================================================================
+  1. VERIFICACIÓN DEL ENTORNO
+======================================================================
+✓ PyTorch: 2.4.1+cu118
+✓ CUDA disponible: True
+✓ CUDA version: 11.8
+✓ CuDNN version: 90100
+✓ GPU: NVIDIA GeForce RTX 2080 Ti
+✓ GPU Memory: 11.5 GB
+✓ Transformers: 4.30.2
+✓ PEFT: 0.13.2
+✓ bitsandbytes: Instalado
+✓ Accelerate: 1.0.1
+
+======================================================================
+  2. VERIFICACIÓN DE CONFIGURACIÓN DE CUANTIZACIÓN
+======================================================================
+✓ Configuración de cuantización 4-bit creada:
+  - load_in_4bit: True
+  - bnb_4bit_compute_dtype: float16
+  - bnb_4bit_use_double_quant: True
+  - bnb_4bit_quant_type: nf4
+
+⚠️  NOTA: Los siguientes tests requieren acceso a HuggingFace
+   Token HuggingFace configurado automáticamente desde archivo .env
+
+======================================================================
+  3. CARGA DEL TOKENIZER
+======================================================================
+Cargando tokenizer: meta-llama/Llama-2-7b
+  (Usando token de HuggingFace desde archivo .env)
+✗ Error: meta-llama/Llama-2-7b does not appear to have a file named config.json. Checkout 'https://huggingface.co/meta-llama/Llama-2-7b/main' for available files.
+
+======================================================================
+  RESULTADO FINAL
+======================================================================
+⚠️  No se pudo cargar el tokenizer
+   Verifica que el token esté configurado correctamente:
+   python3 setup_hf_token.py
