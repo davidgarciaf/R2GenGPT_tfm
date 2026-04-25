@@ -10,3 +10,7 @@ __pycache__/
 
 # Entornos virtuales generados localmente
 environment/*/venv/
+
+# Directorios de entornos locales no rastreados
+environment/Llama2-7B/
+environment/Llama3.2-1B-Instruct/
