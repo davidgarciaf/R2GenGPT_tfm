@@ -7,3 +7,6 @@ save/
 logs/
 *.ckpt
 __pycache__/
+
+# Entornos virtuales generados localmente
+environment/*/venv/
