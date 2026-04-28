@@ -7,3 +7,4 @@ save/
 logs/
 *.ckpt
 __pycache__/
+environment/
