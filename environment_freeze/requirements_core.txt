@@ -1,0 +1,43 @@
+# Core Dependencies - R2GenGPT Llama3.2-1B-Instruct Cuantizado
+# These are the main packages; others will be installed as dependencies
+
+# Deep Learning Framework
+torch==2.4.1+cu118
+torchvision==0.19.1+cu118
+torchaudio==2.4.1+cu118
+
+# Transformers and NLP
+transformers==4.30.2
+tokenizers==0.13.3
+
+# Fine-tuning and Optimization
+peft==0.13.2
+accelerate==0.20.0
+
+# Training Framework
+lightning==2.0.5
+
+# Quantization
+bitsandbytes==0.45.5
+
+# Scientific Computing
+numpy==1.24.4
+scipy==1.10.1
+scikit-learn==1.3.2
+
+# Utilities
+Pillow==10.4.0
+tqdm==4.67.3
+gradio==3.41.2
+
+# Monitoring and Logging
+tensorboardX==2.6.2.2
+torchmetrics==1.5.2
+
+# API and Web
+fastapi==0.115.4
+uvicorn==0.33.0
+
+# Required by transformers
+huggingface-hub==0.22.1
+safetensors==0.4.3
