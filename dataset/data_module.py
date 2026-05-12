@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from lightning.pytorch import LightningDataModule
+from pytorch_lightning import LightningDataModule
 from torch.utils.data import DataLoader
 from dataset.data_helper import create_datasets
 
