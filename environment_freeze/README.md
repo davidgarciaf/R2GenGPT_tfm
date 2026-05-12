@@ -1,9 +1,11 @@
 # Environment Freeze - R2GenGPT Llama3.2-1B-Instruct Cuantizado
 
-**Date**: May 9, 2026  
-**Environment**: Llama3.2-1B-Instruct Cuantizado (4-bit NF4)  
-**Total Packages**: 129  
-**Size**: ~4.6 GB
+## Latest Freezes
+
+| Date | Status | Packages | Metadata | Notes |
+|------|--------|----------|----------|-------|
+| **May 12, 2026** | ✅ Verified | 127 | [Training Run](dgarcia_r2gengpt_training_run_20260512.md) | Used for successful Job 22522 training |
+| May 9, 2026 | ✅ Original | 129 | [Metadata](dgarcia_r2gengpt_llama3.2_1b_freeze_metadata.md) | Initial freeze |
 
 ---
 
@@ -13,13 +15,15 @@ This directory contains a complete freeze/snapshot of the R2GenGPT environment w
 
 ## Files in This Freeze
 
-| File | Purpose | Size |
-|------|---------|------|
-| `dgarcia_r2gengpt_llama3.2_1b_pip_freeze.txt` | Complete pip freeze (all 129 packages with exact versions) | 5 KB |
-| `requirements_core.txt` | Core dependencies only (useful for understanding what's essential) | 1 KB |
-| `dgarcia_r2gengpt_llama3.2_1b_freeze_metadata.md` | Detailed metadata about the environment | 8 KB |
-| `install_from_freeze.sh` | Automated script to reproduce the environment | 5 KB |
-| `README.md` | This file | - |
+| File | Purpose | Date | Size |
+|------|---------|------|------|
+| `dgarcia_r2gengpt_training_run_20260512.md` | Metadata from successful Job 22522 training run | May 12, 2026 | 6 KB |
+| `dgarcia_r2gengpt_llama3.2_1b_pip_freeze_20260512.txt` | Pip freeze (127 packages) used for Job 22522 | May 12, 2026 | 5 KB |
+| `dgarcia_r2gengpt_llama3.2_1b_pip_freeze.txt` | Complete pip freeze (all 129 packages with exact versions) | May 9, 2026 | 5 KB |
+| `requirements_core.txt` | Core dependencies only (useful for understanding what's essential) | May 9, 2026 | 1 KB |
+| `dgarcia_r2gengpt_llama3.2_1b_freeze_metadata.md` | Detailed metadata about the environment | May 9, 2026 | 8 KB |
+| `install_from_freeze.sh` | Automated script to reproduce the environment | May 9, 2026 | 5 KB |
+| `README.md` | This file | - | - |
 
 ## Quick Start
 
