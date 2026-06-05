@@ -83,7 +83,7 @@ parser.add_argument('--devices', type=int, default=2, help='how many gpus to use
 parser.add_argument('--num_nodes', type=int, default=1, help='Number of GPU nodes for distributed training.')
 parser.add_argument('--accelerator', type=str, default="gpu", choices=["cpu", "gpu", "tpu", "ipu", "hpu", "mps"], help='accelerator types')
 #Entrenamiento distribuido con datos en paralelo
-parser.add_argument('--strategy', type=str, default="ddp", help='default ddp for multi-gpus')
+parser.add_argument('--strategy', type=str, default="auto", help='default auto for multi-gpus')
 # parser.add_argument('--precision', type=str, default='bf16-mixed', help='16 or 32 bf16-mixed, using for original pytorch amp auto cast')
 parser.add_argument('--precision', default='16-mixed', type=str)
 parser.add_argument('--limit_val_batches', type=float, default=1.0, help='How much of validation dataset to check (float = fraction, int = num_batches).')

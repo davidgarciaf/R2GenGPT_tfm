@@ -17,6 +17,7 @@ def train(args):
     callbacks = add_callbacks(args)
 
     trainer = pl.Trainer(
+        default_root_dir=args.savedmodel_path,
         devices=args.devices,
         num_nodes=args.num_nodes,
         strategy=args.strategy,
@@ -27,6 +28,7 @@ def train(args):
         max_epochs = args.max_epochs,
         num_sanity_val_steps = args.num_sanity_val_steps,
         accumulate_grad_batches=args.accumulate_grad_batches,
+        enable_checkpointing=True,
         callbacks=callbacks["callbacks"], 
         logger=callbacks["loggers"]
     )

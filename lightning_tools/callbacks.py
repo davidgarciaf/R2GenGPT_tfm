@@ -12,13 +12,27 @@ def add_callbacks(args):
 
     # --------- Add Callbacks
     # Guarda los pesos del modelo periódicamente
+    # checkpoint_callback = ModelCheckpoint(
+    #     dirpath=os.path.join(log_dir, "checkpoints"),
+    #     filename="{epoch}-{step}",
+    #     # disable top-k tracking when no monitor is configured, and keep the last checkpoint
+    #     save_top_k=0,
+    #     every_n_train_steps=args.every_n_train_steps,
+    #     save_last=True,
+    #     save_on_train_epoch_end=True,
+    #     # save only model weights to reduce memory usage when serializing
+    #     save_weights_only=True,
+    #     verbose=True,
+    # )
     checkpoint_callback = ModelCheckpoint(
         dirpath=os.path.join(log_dir, "checkpoints"),
         filename="{epoch}-{step}",
-        save_top_k=-1,
-        every_n_train_steps=args.every_n_train_steps,
+        save_top_k=0,
+        every_n_train_steps=0,
         save_last=False,
-        save_weights_only=False
+        save_on_train_epoch_end=False,
+        save_weights_only=True,
+        verbose=True,
     )
     
     # Monitorea el learning rate
